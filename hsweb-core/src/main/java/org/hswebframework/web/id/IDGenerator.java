@@ -30,13 +30,14 @@ import java.security.NoSuchAlgorithmException;
  * @author zhouhao
  * @since 3.0
  */
+@FunctionalInterface
 public interface IDGenerator<T> {
     T generate();
 
     /**
      * 使用UUID生成id
      */
-    IDGenerator<String> UUID = java.util.UUID.randomUUID()::toString;
+    IDGenerator<String> UUID = () -> java.util.UUID.randomUUID().toString();
 
     /**
      * 随机字符
@@ -59,7 +60,12 @@ public interface IDGenerator<T> {
     /**
      * 雪花算法
      */
-    IDGenerator<Long> SNOW_FLAKE = SnowflakeIdGenerator.getInstance()::nextId;
+    IDGenerator<Long>   SNOW_FLAKE        = SnowflakeIdGenerator.getInstance()::nextId;
+
+    /**
+     * 雪花算法转String
+     */
+    IDGenerator<String> SNOW_FLAKE_STRING = () -> String.valueOf(SNOW_FLAKE.generate());
 
     /**
      * 雪花算法的16进制
